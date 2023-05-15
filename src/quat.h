@@ -93,7 +93,7 @@ static inline quat quat_abs(quat x)
 static inline quat quat_exp(vec3 v, float eps=1e-8f)
 {
     float halfangle = sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
-	
+
     if (halfangle < eps)
     {
         return quat_normalize(quat(1.0f, v.x, v.y, v.z));
@@ -109,7 +109,7 @@ static inline quat quat_exp(vec3 v, float eps=1e-8f)
 static inline vec3 quat_log(quat q, float eps=1e-8f)
 {
     float length = sqrtf(q.x*q.x + q.y*q.y + q.z*q.z);
-	
+
     if (length < eps)
     {
         return vec3(q.x, q.y, q.z);
@@ -135,7 +135,7 @@ static inline vec3 quat_differentiate_angular_velocity(
     quat next, quat curr, float dt, float eps=1e-8f)
 {
     return quat_to_scaled_angle_axis(
-        quat_abs(quat_mul(next, quat_inv(curr))), eps) / dt; 
+        quat_abs(quat_mul(next, quat_inv(curr))), eps) / dt;
 }
 
 static inline quat quat_integrate_angular_velocity(
@@ -187,7 +187,7 @@ static inline quat quat_nlerp_shortest(quat q, quat p, float alpha)
     {
         p = -p;
     }
-    
+
     return quat_nlerp(q, p, alpha);
 }
 
@@ -197,7 +197,7 @@ static inline quat quat_slerp_shortest(quat q, quat p, float alpha, float eps=1e
     {
         p = -p;
     }
-    
+
     float dot = quat_dot(q, p);
 	  float theta = acosf(clampf(dot, -1.0f, 1.0f));
 
@@ -205,7 +205,7 @@ static inline quat quat_slerp_shortest(quat q, quat p, float alpha, float eps=1e
     {
         return quat_nlerp(q, p, alpha);
     }
-    
+
     quat r = quat_normalize(p - q*dot);
 
     return q * cosf(theta * alpha) + r * sinf(theta * alpha);
@@ -215,12 +215,12 @@ static inline quat quat_slerp_shortest(quat q, quat p, float alpha, float eps=1e
 static inline quat quat_slerp_shortest_approx(quat q, quat p, float alpha)
 {
     float ca = quat_dot(q, p);
-    
+
     if (ca < 0.0f)
     {
         p = -p;
     }
-    
+
     float d = fabsf(ca);
     float a = 1.0904f + d * (-3.2452f + d * (3.55645f - d * 1.43519f));
     float b = 0.848013f + d * (-1.06021f + d * 0.215638f);
@@ -231,7 +231,7 @@ static inline quat quat_slerp_shortest_approx(quat q, quat p, float alpha)
 }
 
 static inline float quat_angle_between(quat q, quat p)
-{   
+{
     quat diff = quat_abs(quat_mul_inv(q, p));
     return 2.0f * acosf(clampf(diff.w, -1.0f, 1.0f));
 }
@@ -239,11 +239,11 @@ static inline float quat_angle_between(quat q, quat p)
 static inline quat quat_between(vec3 p, vec3 q)
 {
     vec3 c = cross(p, q);
-    
+
     return quat_normalize(quat(
         sqrtf(dot(p, p) * dot(q, q)) + dot(p, q),
-        c.x, 
-        c.y, 
+        c.x,
+        c.y,
         c.z));
 }
 
@@ -254,17 +254,17 @@ static inline quat quat_from_cols(vec3 c0, vec3 c1, vec3 c2)
         if (c0.x > c1.y)
         {
             return quat_normalize(quat(
-                c1.z-c2.y, 
-                1.0f + c0.x - c1.y - c2.z, 
-                c0.y+c1.x, 
+                c1.z-c2.y,
+                1.0f + c0.x - c1.y - c2.z,
+                c0.y+c1.x,
                 c2.x+c0.z));
         }
         else
         {
             return quat_normalize(quat(
-                c2.x-c0.z, 
-                c0.y+c1.x, 
-                1.0f - c0.x + c1.y - c2.z, 
+                c2.x-c0.z,
+                c0.y+c1.x,
+                1.0f - c0.x + c1.y - c2.z,
                 c1.z+c2.y));
         }
     }
@@ -273,17 +273,17 @@ static inline quat quat_from_cols(vec3 c0, vec3 c1, vec3 c2)
         if (c0.x < -c1.y)
         {
             return quat_normalize(quat(
-                c0.y-c1.x, 
-                c2.x+c0.z, 
-                c1.z+c2.y, 
+                c0.y-c1.x,
+                c2.x+c0.z,
+                c1.z+c2.y,
                 1.0f - c0.x - c1.y + c2.z));
         }
         else
         {
             return quat_normalize(quat(
-                1.0f + c0.x + c1.y + c2.z, 
-                c1.z-c2.y, 
-                c2.x-c0.z, 
+                1.0f + c0.x + c1.y + c2.z,
+                c1.z-c2.y,
+                c2.x-c0.z,
                 c0.y-c1.x));
         }
     }

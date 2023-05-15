@@ -42,7 +42,7 @@ static inline float halflife_to_damping(float halflife, float eps = 1e-5f)
 {
     return (4.0f * LN2f) / (halflife + eps);
 }
-    
+
 static inline float damping_to_halflife(float damping, float eps = 1e-5f)
 {
     return (4.0f * LN2f) / (damping + eps);
@@ -61,13 +61,13 @@ static inline float stiffness_to_frequency(float stiffness)
 //--------------------------------------
 
 static inline void simple_spring_damper_exact(
-    float& x, 
-    float& v, 
-    const float x_goal, 
-    const float halflife, 
+    float& x,
+    float& v,
+    const float x_goal,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
+    float y = halflife_to_damping(halflife) / 2.0f;
     float j0 = x - x_goal;
     float j1 = v + j0*y;
     float eydt = fast_negexpf(y*dt);
@@ -77,13 +77,13 @@ static inline void simple_spring_damper_exact(
 }
 
 static inline void simple_spring_damper_exact(
-    vec3& x, 
-    vec3& v, 
-    const vec3 x_goal, 
-    const float halflife, 
+    vec3& x,
+    vec3& v,
+    const vec3 x_goal,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
+    float y = halflife_to_damping(halflife) / 2.0f;
     vec3 j0 = x - x_goal;
     vec3 j1 = v + j0*y;
     float eydt = fast_negexpf(y*dt);
@@ -93,17 +93,17 @@ static inline void simple_spring_damper_exact(
 }
 
 static inline void simple_spring_damper_exact(
-    quat& x, 
-    vec3& v, 
-    const quat x_goal, 
-    const float halflife, 
+    quat& x,
+    vec3& v,
+    const quat x_goal,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
-    
+    float y = halflife_to_damping(halflife) / 2.0f;
+
     vec3 j0 = quat_to_scaled_angle_axis(quat_abs(quat_mul(x, quat_inv(x_goal))));
     vec3 j1 = v + j0*y;
-    
+
     float eydt = fast_negexpf(y*dt);
 
     x = quat_mul(quat_from_scaled_angle_axis(eydt*(j0 + j1*dt)), x_goal);
@@ -113,12 +113,12 @@ static inline void simple_spring_damper_exact(
 //--------------------------------------
 
 static inline void decay_spring_damper_exact(
-    float& x, 
-    float& v, 
-    const float halflife, 
+    float& x,
+    float& v,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
+    float y = halflife_to_damping(halflife) / 2.0f;
     float j1 = v + x*y;
     float eydt = fast_negexpf(y*dt);
 
@@ -127,12 +127,12 @@ static inline void decay_spring_damper_exact(
 }
 
 static inline void decay_spring_damper_exact(
-    vec3& x, 
-    vec3& v, 
-    const float halflife, 
+    vec3& x,
+    vec3& v,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
+    float y = halflife_to_damping(halflife) / 2.0f;
     vec3 j1 = v + x*y;
     float eydt = fast_negexpf(y*dt);
 
@@ -141,16 +141,16 @@ static inline void decay_spring_damper_exact(
 }
 
 static inline void decay_spring_damper_exact(
-    quat& x, 
-    vec3& v, 
-    const float halflife, 
+    quat& x,
+    vec3& v,
+    const float halflife,
     const float dt)
 {
-    float y = halflife_to_damping(halflife) / 2.0f; 
-    
+    float y = halflife_to_damping(halflife) / 2.0f;
+
     vec3 j0 = quat_to_scaled_angle_axis(x);
     vec3 j1 = v + j0*y;
-    
+
     float eydt = fast_negexpf(y*dt);
 
     x = quat_from_scaled_angle_axis(eydt*(j0 + j1*dt));
@@ -160,8 +160,8 @@ static inline void decay_spring_damper_exact(
 //--------------------------------------
 
 static inline void inertialize_transition(
-    vec3& off_x, 
-    vec3& off_v, 
+    vec3& off_x,
+    vec3& off_v,
     const vec3 src_x,
     const vec3 src_v,
     const vec3 dst_x,
@@ -172,11 +172,11 @@ static inline void inertialize_transition(
 }
 
 static inline void inertialize_update(
-    vec3& out_x, 
+    vec3& out_x,
     vec3& out_v,
-    vec3& off_x, 
+    vec3& off_x,
     vec3& off_v,
-    const vec3 in_x, 
+    const vec3 in_x,
     const vec3 in_v,
     const float halflife,
     const float dt)
@@ -187,8 +187,8 @@ static inline void inertialize_update(
 }
 
 static inline void inertialize_transition(
-    quat& off_x, 
-    vec3& off_v, 
+    quat& off_x,
+    vec3& off_v,
     const quat src_x,
     const vec3 src_v,
     const quat dst_x,
@@ -199,11 +199,11 @@ static inline void inertialize_transition(
 }
 
 static inline void inertialize_update(
-    quat& out_x, 
+    quat& out_x,
     vec3& out_v,
-    quat& off_x, 
+    quat& off_x,
     vec3& off_v,
-    const quat in_x, 
+    const quat in_x,
     const vec3 in_v,
     const float halflife,
     const float dt)
