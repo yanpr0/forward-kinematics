@@ -982,7 +982,7 @@ int main(void)
 
     // Ground Plane
 
-    Shader ground_plane_shader = LoadShader("./resources/checkerboard.vs", "./resources/checkerboard.fs");
+    Shader ground_plane_shader = LoadShader("../resources/checkerboard.vs", "../resources/checkerboard.fs");
     Mesh ground_plane_mesh = GenMeshPlane(20.0f, 20.0f, 10, 10);
     Model ground_plane_model = LoadModelFromMesh(ground_plane_mesh);
     ground_plane_model.materials[0].shader = ground_plane_shader;
@@ -990,9 +990,9 @@ int main(void)
     // Character
 
     character character_data;
-    character_load(character_data, "./resources/character.bin");
+    character_load(character_data, "../resources/character.bin");
 
-    Shader character_shader = LoadShader("./resources/character.vs", "./resources/character.fs");
+    Shader character_shader = LoadShader("../resources/character.vs", "../resources/character.fs");
     Mesh character_mesh = make_character_mesh(character_data);
     Model character_model = LoadModelFromMesh(character_mesh);
     character_model.materials[0].shader = character_shader;
@@ -1000,7 +1000,7 @@ int main(void)
     // Load Animation Data and build Matching Database
 
     database db;
-    database_load(db, "./resources/database.bin");
+    database_load(db, "../resources/database.bin");
 
     float feature_weight_foot_position = 0.75f;
     float feature_weight_foot_velocity = 1.0f;
@@ -1016,7 +1016,7 @@ int main(void)
         feature_weight_trajectory_positions,
         feature_weight_trajectory_directions);
 
-    database_save_matching_features(db, "./resources/features.bin");
+    database_save_matching_features(db, "../resources/features.bin");
 
     // Pose & Inertializer Data
 
