@@ -104,7 +104,7 @@ void forward_kinematics_velocity(
             bone_parents, bone_parents(bone));
 
     bone_position = parent_pos + quat_mul_vec3(parent_rot, bone_positions(bone));
-    bone_velocity = parent_vel + quat_mul_vec3(parent_rot, bone_velocities(bone));
+    bone_velocity = parent_vel + quat_mul_vec3(parent_rot, bone_velocities(bone)) + cross(parent_ang_vel, quat_mul_vec3(parent_rot, bone_positions(bone)));
     bone_rotation = quat_mul(parent_rot, bone_rotations(bone));
     bone_rotation = quat_normalize(bone_rotation);
     bone_angular_velocity = parent_ang_vel + quat_mul_vec3(parent_rot, bone_angular_velocities(bone));
